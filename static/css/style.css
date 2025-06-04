@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* static/css/style.css */
+
+body {
+    font-family: 'Inter', sans-serif;
+}

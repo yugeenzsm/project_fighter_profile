@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ fighter.name }}'s Fighter Card</title>
+    <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-gray-900 to-black text-white min-h-screen flex items-center justify-center p-6">
+    <div class="bg-white text-gray-900 rounded-2xl shadow-2xl p-8 max-w-lg w-full">
+        
+        {% if fighter.image %}
+        <div class="flex justify-center mb-6">
+            <img src="{{ url_for('static', filename=fighter.image) }}" alt="Fighter Image" class="w-32 h-32 object-cover rounded-full shadow-md border-4 border-blue-500">
+        </div>
+        {% endif %}
+
+        <div class="text-center mb-6">
+            <h1 class="text-3xl font-extrabold text-gray-800">{{ fighter.name }}</h1>
+            <p class="text-gray-500 text-lg mt-1">Age {{ fighter.age }} • {{ fighter.weight_class }}</p>
+        </div>
+
+        <div class="flex justify-around items-center bg-gray-100 rounded-xl p-6 mb-6 shadow-inner">
+            <div class="text-center">
+                <p class="text-3xl font-bold text-green-600">{{ fighter.wins }}</p>
+                <p class="text-sm text-gray-600">Wins</p>
+            </div>
+            <div class="text-center">
+                <p class="text-3xl font-bold text-red-600">{{ fighter.losses }}</p>
+                <p class="text-sm text-gray-600">Losses</p>
+            </div>
+        </div>
+
+        <div>
+            <h2 class="text-xl font-semibold text-gray-800 mb-2">Bio</h2>
+            <p class="text-gray-700 bg-gray-50 p-4 rounded-lg border-l-4 border-blue-600 italic leading-relaxed">
+                {{ fighter.bio }}
+            </p>
+        </div>
+
+        <div class="mt-8 text-center">
+            <a href="/" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition shadow-md">🔁 Create Another</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fighter Card - Modern Design</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom gradient animations */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.8); }
+        }
+        
+        .glow-border {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        
+        .glass-effect {
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, rgba(17, 24, 39, 0.9), rgba(31, 41, 55, 0.9));
+            border: 1px solid rgba(75, 85, 99, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .cyber-text {
+            background: linear-gradient(45deg, #3b82f6, #06b6d4, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .neon-border {
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5), 
+                        inset 0 0 10px rgba(59, 130, 246, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-black text-white flex items-center justify-center p-4">
+    <div class="glass-effect rounded-3xl p-8 w-full max-w-md shadow-2xl glow-border">
+        
+        <!-- Fighter Image -->
+        <div class="flex justify-center mb-6">
+            <div class="relative">
+                <div class="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 p-1 neon-border">
+                    {% if fighter.image %}
+                    <img src="{{ url_for('static', filename=fighter.image) }}" alt="{{ fighter.name }}"
+                         class="w-full h-full rounded-full object-cover">
+                    {% else %}
+                    <div class="w-full h-full rounded-full bg-gray-800 flex items-center justify-center text-4xl font-bold cyber-text">
+                        {{ fighter.name[0] if fighter.name else 'F' }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="absolute -bottom-2 -right-2 bg-green-500 rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold">
+                    ⚡
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Fighter Name -->
+        <h1 class="text-3xl font-bold text-center mb-2 cyber-text">
+            {{ fighter.name }}
+        </h1>
+        
+        <!-- Fighter Details -->
+        <div class="text-center text-gray-300 mb-6 flex justify-center items-center gap-4">
+            <span class="bg-blue-500/20 px-3 py-1 rounded-full text-sm">Age {{ fighter.age }}</span>
+            <span class="bg-purple-500/20 px-3 py-1 rounded-full text-sm">{{ fighter.weight_class }}</span>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-2 gap-4 mb-6">
+            <div class="stat-card rounded-xl p-4 text-center">
+                <div class="text-2xl font-bold text-green-400 mb-1">{{ fighter.wins }}</div>
+                <div class="text-sm text-gray-400 uppercase tracking-wide">Wins</div>
+            </div>
+            <div class="stat-card rounded-xl p-4 text-center">
+                <div class="text-2xl font-bold text-red-400 mb-1">{{ fighter.losses }}</div>
+                <div class="text-sm text-gray-400 uppercase tracking-wide">Losses</div>
+            </div>
+        </div>
+        
+        <!-- Win Rate -->
+        <div class="stat-card rounded-xl p-4 mb-6 text-center">
+            <div class="text-3xl font-bold cyber-text mb-1">{{ fighter.win_percentage }}%</div>
+            <div class="text-sm text-gray-400 uppercase tracking-wide">Win Rate</div>
+        </div>
+
+        <!-- Bio Section -->
+        <div class="glass-effect rounded-xl p-6 mb-6">
+            <h2 class="text-lg font-semibold text-blue-300 mb-3 flex items-center gap-2">
+                <span>📊</span> Fighter Profile
+            </h2>
+            <p class="text-gray-300 leading-relaxed text-sm">
+                 {{ fighter.bio }}
+            </p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="text-center">
+            <a href="/" class="inline-block bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 rounded-xl py-3 px-8 font-semibold transition-all duration-300 transform hover:scale-105">
+                Generate New
+            </a>
+            <a href="/" class="inline-block bg-gradient-to-r from-green-600 to-green-700 hover:from-purple-700 hover:to-purple-800 rounded-xl py-3 px-8 font-semibold transition-all duration-300 transform hover:scale-105">
+                Download PNG 
+            </a> 
+            <!-- add logic for saving the card as png -->
+        </div>
+        
+        <!-- Footer -->
+        <div class="text-center mt-6">
+            <div class="text-xs text-gray-500 uppercase tracking-wider">
+                Modern Fighter Card System
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ fighter.name }} - Fighter Card</title>
+  <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+  <div class="bg-white text-gray-900 rounded-xl shadow-lg p-8 w-full max-w-lg border">
+    
+    <!-- Fighter Image -->
+    {% if fighter.image %}
+    <div class="flex justify-center mb-6">
+      <img src="{{ url_for('static', filename=fighter.image) }}" alt="{{ fighter.name }}"
+           class="w-32 h-32 object-cover rounded-full border-4 border-blue-500 shadow-md">
+    </div>
+    {% else %}
+    <div class="flex justify-center mb-6">
+      <div class="w-32 h-32 bg-gray-200 rounded-full border-4 border-blue-500 shadow-md flex items-center justify-center">
+        <span class="text-gray-500 text-lg font-semibold">{{ fighter.name[0] if fighter.name else 'F' }}</span>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Fighter Name and Basic Info -->
+    <h1 class="text-3xl font-bold text-center mb-2 text-gray-800">{{ fighter.name }}</h1>
+    <p class="text-center text-gray-600 mb-4">
+      Age {{ fighter.age }} • {{ fighter.weight_class }}
+    </p>
+
+    <!-- Fight Record -->
+    <div class="flex justify-around bg-gray-50 rounded-lg p-4 mb-6 shadow-inner">
+      <div class="text-center">
+        <p class="text-2xl font-bold text-green-600">{{ fighter.wins }}</p>
+        <p class="text-sm text-gray-600">Wins</p>
+      </div>
+      <div class="text-center">
+        <p class="text-2xl font-bold text-red-600">{{ fighter.losses }}</p>
+        <p class="text-sm text-gray-600">Losses</p>
+      </div>
+      {% if fighter.total_fights > 0 %}
+      <div class="text-center">
+        <p class="text-2xl font-bold text-blue-600">{{ fighter.win_percentage }}%</p>
+        <p class="text-sm text-gray-600">Win Rate</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Fighter Bio -->
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold mb-2 text-gray-800">Fighter Bio</h2>
+      <p class="bg-gray-100 p-4 rounded-md text-gray-700 italic border-l-4 border-blue-600 leading-relaxed">
+        {{ fighter.bio }}
+      </p>
+    </div>
+
+    <!-- Additional Stats -->
+    <div class="bg-blue-50 p-4 rounded-lg mb-6 border border-blue-200">
+      <h3 class="font-semibold text-blue-800 mb-2">Fight Statistics</h3>
+      <div class="grid grid-cols-2 gap-4 text-sm">
+        <div>
+          <span class="text-blue-700 font-medium">Total Fights:</span>
+          <span class="text-blue-900">{{ fighter.total_fights }}</span>
+        </div>
+        <div>
+          <span class="text-blue-700 font-medium">Weight Class:</span>
+          <span class="text-blue-900">{{ fighter.weight_class }}</span>
+        </div>
+        <div>
+          <span class="text-blue-700 font-medium">Age Category:</span>
+          <span class="text-blue-900">
+            {% if fighter.age < 18 %}Minor{% elif fighter.age < 25 %}Young{% elif fighter.age < 35 %}Prime{% else %}Veteran{% endif %}
+          </span>
+        </div>
+        <div>
+          <span class="text-blue-700 font-medium">Card Created:</span>
+          <span class="text-blue-900">{{ fighter.created_date }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="text-center">
+      <a href="/" class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300 shadow-md">
+        ← Create Another Card
+      </a>
+    </div>
+    {% if request.args.get('premium') == 'true' or premium %}
+        <div class="text-center text-green-500 text-sm mt-4">🌟 Premium Access Enabled</div>
+    {% endif %}
+  </div>
+    {% if download_url %}
+    <div class="text-center mt-6">
+        <a href="{{ download_url }}" download class="inline-block bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
+        ⬇️ Download Card PNG
+        </a>
+        <br><br>
+        <img src="{{ download_url }}" alt="Card Preview" class="mt-4 max-w-full border rounded shadow-lg">
+    </div>
+    {% endif %}
+    {% if download_url %}
+    <div class="mt-10 text-center">
+        <a href="{{ download_url }}" download
+        class="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg shadow transition duration-300">
+        ⬇️ Download Card PNG
+        </a>
+
+        <div class="mt-6">
+        <h3 class="text-gray-700 font-medium mb-2">Preview of Generated PNG</h3>
+        <img src="{{ download_url }}" alt="Card Preview"
+            class="mx-auto max-w-md w-full border border-gray-300 shadow-lg rounded-xl">
+        </div>
+    </div>
+    {% endif %}
+
+
+</body>
+</html>
