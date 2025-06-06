@@ -2,64 +2,58 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>{{ fighter.name }} - Fighter Card</title>
+  <title>yugeen - Fighter Card</title>
 <!-- For quick testing -->
 <script src="https://cdn.tailwindcss.com"></script>
-  <!-- <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet"> -->
+  <!-- <link href="/static/css/output.css" rel="stylesheet"> -->
 </head>
 <body class="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-pink-900 via-white-900 to-blue text-white">
   <div class="bg-white bg-opacity-90 backdrop-blur-md text-gray-900 rounded-3xl shadow-xl p-10 w-full max-w-lg border border-gray-200">
 
     
     <!-- Fighter Image -->
-    {% if fighter.image %}
+    
     <div class="flex justify-center mb-6">
-      <img src="{{ url_for('static', filename=fighter.image) }}" alt="{{ fighter.name }}"
-           class="w-40 h-40 object-cover rounded-full border-4 border-pink-400 shadow-md">
+      <img src="/static/uploads/20250606_231417_cameraman.png" alt="yugeen"
+           class="w-32 h-32 object-cover rounded-full border-4 border-pink-390 shadow-md">
     </div>
-    {% else %}
-    <div class="flex justify-center mb-6">
-      <div class="w-40 h-40 bg-gray-200 rounded-full border-4 border-pink-500 shadow-md flex items-center justify-center">
-        <span class="text-gray-500 text-lg font-semibold">{{ fighter.name[0] if fighter.name else 'F' }}</span>
-      </div>
-    </div>
-    {% endif %}
+    
 
     <!-- Fighter Name and Basic Info -->
-    <h1 class="text-3xl font-bold text-center mb-1 text-gray-800">{{ fighter.name }}</h1>
-    {% if fighter.fight_name %}
-      <p class="text-center text-pink-500 italic text-lg mb-4">{{ fighter.fight_name }}</p>
-    {% endif %}    <p class="text-center text-gray-600 mb-4">
-    Age {{ fighter.age }} • {{ fighter.weight_class }}
+    <h1 class="text-3xl font-bold text-center mb-1 text-gray-800">yugeen</h1>
+    
+      <p class="text-center text-pink-500 italic text-lg mb-4">the panther</p>
+        <p class="text-center text-gray-600 mb-4">
+    Age 20 • Flyweight
     </p>
 
     <!-- Fight Record -->
     <div class="flex justify-around bg-gray-50 rounded-lg p-4 mb-6 shadow-inner">
       <div class="text-center">
-        <p class="text-2xl font-bold text-green-600">{{ fighter.wins }}</p>
+        <p class="text-2xl font-bold text-green-600">12</p>
         <p class="text-sm text-gray-600">Wins</p>
       </div>
       <div class="text-center">
-        <p class="text-2xl font-bold text-red-600">{{ fighter.losses }}</p>
+        <p class="text-2xl font-bold text-red-600">9</p>
         <p class="text-sm text-gray-600">Losses</p>
       </div>
       <div class="text-center">
-        <p class="text-2xl font-bold text-yellow-500">{{ fighter.draws }}</p>
+        <p class="text-2xl font-bold text-yellow-500">1</p>
         <p class="text-sm text-gray-600">Draws</p>
       </div>
-      {% if fighter.total_fights > 0 %}
+      
       <div class="text-center">
-        <p class="text-2xl font-bold text-pink-600">{{ fighter.win_percentage }}%</p>
+        <p class="text-2xl font-bold text-pink-600">54.5%</p>
         <p class="text-sm text-gray-600">Win Rate</p>
       </div>
-      {% endif %}
+      
     </div>
 
     <!-- Fighter Bio -->
     <div class="mb-6">
       <h2 class="text-xl font-semibold mb-2 text-gray-800">Fighter Bio</h2>
       <p class="bg-gray-100 p-4 rounded-md text-gray-700 italic border-l-4 border-pink-600 leading-relaxed">
-        {{ fighter.bio }}
+        dfghjkl;kjhgfdcgvhbjk
       </p>
     </div>
 
@@ -69,48 +63,46 @@
     <div class="grid grid-cols-2 gap-4 text-sm">
       <div>
         <span class="text-pink-700 font-medium">Total Fights:</span>
-        <span class="text-pink-900">{{ fighter.total_fights }}</span>
+        <span class="text-pink-900">22</span>
       </div>
       <div>
         <span class="text-pink-700 font-medium">Fight Name:</span>
-        <span class="text-pink-900">{{ fighter.fight_name or 'N/A' }}</span>
+        <span class="text-pink-900">the panther</span>
       </div>
       <div>
         <span class="text-pink-700 font-medium">Fighting Out Of:</span>
-        <span class="text-pink-900">{{ fighter.fights_out_of or 'N/A' }}</span>
+        <span class="text-pink-900">ktm, nepal</span>
       </div>
       <div>
         <span class="text-pink-700 font-medium">Weight Class:</span>
-        <span class="text-pink-900">{{ fighter.weight_class }}</span>
+        <span class="text-pink-900">Flyweight</span>
       </div>
       <div>
         <span class="text-pink-700 font-medium">Weight:</span>
-        <span class="text-pink-900">{{ fighter.weight or 'N/A' }}</span>
+        <span class="text-pink-900">55</span>
       </div>
       <div>
         <span class="text-pink-700 font-medium">Height:</span>
-        <span class="text-pink-900">{{ fighter.height or 'N/A' }}</span>
+        <span class="text-pink-900">164</span>
       </div>
       <div>
         <span class="text-pink-700 font-medium">Reach:</span>
-        <span class="text-pink-900">{{ fighter.reach or 'N/A' }}</span>
+        <span class="text-pink-900">151</span>
       </div>
       <div>
         <span class="text-pink-700 font-medium">Style:</span>
-        <span class="text-pink-900">{{ fighter.style or 'N/A' }}</span>
+        <span class="text-pink-900">bixing</span>
       </div>
       <div>
         <span class="text-pink-700 font-medium">Age Category:</span>
         <span class="text-pink-900">
-          {% if fighter.age < 18 %}Minor
-          {% elif fighter.age < 25 %}Young
-          {% elif fighter.age < 35 %}Prime
-          {% else %}Veteran{% endif %}
+          Young
+          
         </span>
       </div>
       <div>
         <span class="text-pink-700 font-medium">Card Created:</span>
-        <span class="text-pink-900">{{ fighter.created_date }}</span>
+        <span class="text-pink-900">June 06, 2025</span>
       </div>
     </div>
   </div>

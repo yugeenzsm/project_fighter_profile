@@ -89,11 +89,17 @@ def card():
         weight_class = sanitize_input(request.form.get('weight_class', ''))
         wins_str = request.form.get('wins', '0')
         losses_str = request.form.get('losses', '0')
+        draws_str = request.form.get('draws', '0')
         bio = sanitize_input(request.form.get('bio', ''))
         height = sanitize_input(request.form.get('height', ''))
         weight = sanitize_input(request.form.get('weight', ''))
         reach = sanitize_input(request.form.get('reach', ''))
         style = sanitize_input(request.form.get('style', ''))
+        if style == 'Other':
+            style = sanitize_input(request.form.get('custom_style', 'Other')),
+        fight_name = sanitize_input(request.form.get('fight_name', ''))
+        fights_out_of = sanitize_input(request.form.get('fights_out_of', ''))
+
 
         errors = []
         warnings = []
@@ -119,6 +125,7 @@ def card():
         else:
             wins = int(wins_str)
             losses = int(losses_str)
+            draws = int(draws_str) if draws_str.isdigit() else 0
 
         if not bio or len(bio) < 10:
             errors.append("Bio must be at least 10 characters long")
@@ -156,16 +163,25 @@ def card():
             'losses': losses,
             'bio': bio,
             'image': image_path,
-            'total_fights': wins + losses,
-            'win_percentage': round((wins / (wins + losses) * 100), 1) if (wins + losses) > 0 else 0,
+            'total_fights': wins + losses + draws,
+            'win_percentage': round((wins / (wins + losses + draws) * 100), 1) if (wins + losses + draws) > 0 else 0,
             'created_date': datetime.now().strftime("%B %d, %Y"),
+            'fight_name': fight_name,
+            'draws': draws,
+            'fights_out_of': fights_out_of,
             'height': height,
             'weight': weight,
             'reach': reach,
             'style': style
         }
-
+        # Save HTML snapshot for future PNG download
         output_file = f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{name}.png"
+
+        html_output_path = f"templates/generated_cards/{output_file.replace('.png', '.html')}"
+        os.makedirs(os.path.dirname(html_output_path), exist_ok=True)
+        with open(html_output_path, "w", encoding="utf-8") as f:
+            f.write(render_template(template_name, fighter=fighter_data))
+
         png_success, png_error = render_card_to_png(fighter_data, template_name=template_name, output_file=output_file)
         if not png_success:
             flash(f"Card created but PNG generation failed: {png_error}", 'warning')
@@ -176,6 +192,20 @@ def card():
     except Exception as e:
         flash(f"An unexpected error occurred: {str(e)}", 'error')
         return redirect(url_for('index'))
+
+@app.route("/download/<filename>")
+def download_card(filename):
+    file_path = os.path.join('static', 'generated', filename)
+    if not os.path.exists(file_path):
+        flash("Card image not found.", 'error')
+        return redirect(url_for('index'))
+    return send_from_directory('static/generated', filename, as_attachment=True)
+    
+    # Render HTML to PNG
+    hti = Html2Image(output_path="static/generated")
+    hti.screenshot(html_file=html_path, save_as=f"{filename}.png", size=(600, 900))  # Customize size as needed
+
+    return send_file(output_path, as_attachment=True)
 
 @app.errorhandler(413)
 def too_large(e):
